@@ -26,7 +26,7 @@
 #' A getversion function
 #' @export getversion
 getversion = function() {
-  return("0.2.3")
+  return("0.2.4")
 }
 
 #' A cats2h5 function for convert csv file to h5 file
@@ -57,7 +57,7 @@ cats2h5 = function(filecsv="",accres=50, fileh5="" ) {
     h5f <- h5file(name = fileh5, mode = "a")
     h5f["data"]=ldm
     h5attr(h5f, "logger")="CATS"
-    h5attr(h5f, "version")=getversion()
+    h5attr(h5f, "version")=VersionLCATS
     h5attr(h5f, "datestart")=as.character.Date(datestart)
     h5attr(h5f, "accres")=accres
     h5attr(h5f, "filesrc")=basename(filecsv)
@@ -98,7 +98,7 @@ democats2h5 = function(fileh5="",nbrow=10000) {
     h5f <- h5file(name = fileh5, mode = "a")
     h5f["data"]=ldm
     h5attr(h5f, "logger")="CATS"
-    h5attr(h5f, "version")=getversion()
+    h5attr(h5f, "version")=VersionLCATS
     h5attr(h5f, "datestart")=as.character.Date(datestart)
     h5attr(h5f, "filesrc")="democats2h5"
     h5attr(h5f, "accres")=1
@@ -162,7 +162,7 @@ axytrek2h5 = function(filecsv="", accres=25, fileh5="") {
     h5f <- h5file(name = fileh5, mode = "a")
     h5f["data"]=ldm
     h5attr(h5f, "logger")="AXYTREK"
-    h5attr(h5f, "version")=getversion()
+    h5attr(h5f, "version")=VersionLAxytrek
     h5attr(h5f, "datestart")=as.character.Date(datestart)
     h5attr(h5f, "filesrc")=basename(filecsv)
     h5attr(h5f, "accres")=accres
@@ -196,13 +196,86 @@ demoaxytrek2h5 = function(fileh5="",nbrow=10000) {
     h5f <- h5file(name = fileh5, mode = "a")
     h5f["data"]=ldm
     h5attr(h5f, "logger")="AXYTREK"
-    h5attr(h5f, "version")=getversion()
+    h5attr(h5f, "version")=VersionLAxytrek
     h5attr(h5f, "datestart")=as.character.Date(datestart)
     h5attr(h5f, "filesrc")="demoaxytrek2h5"
     h5attr(h5f, "accres")=1
     h5close(h5f)
   }
 }
+
+#' A lul2h5 function for concert lul csv file to h5 file
+#' @param filecsv  A input LUL csv file.
+#' @param accres input number of data rate in 1 seconde
+#' @param fileh5 A output h5 data file.
+#' @export lul2h5
+lul2h5 = function(filecsv="", accres=25, fileh5="") {
+  if(!is.character(filecsv)){
+    stop("filecsv file path")
+  }else if (!is.character(fileh5)){
+    stop("fileh5 file path")
+  }else {
+    print(paste("in:",filecsv))
+    print(paste("out:",fileh5))
+    lds=data.table::fread(file=filecsv,skip = 27,header = F, sep="\t")
+    names(lds)=c("date","time","t","p","l")
+    strdatestart=paste(lds[1,"date"],lds[1,"time"])
+    print(strdatestart)
+    datestart=as.POSIXct(strdatestart,format="%d/%m/%Y %H:%M:%OS",tz="GMT")
+    nbrow=nrow(lds)
+    print(paste("nbrow:",nbrow))
+    #change default value
+    ldm=lds[,"t"]/10
+    lds[,"t"]=ldm
+    ldm=lds[,"p"]*(-1)
+    lds[,"p"]=ldm
+    #ecriture du fichier H5
+    ldm=data.matrix(lds[,c("t","p","l")])
+    rm(lds)
+    if(file.exists(fileh5)) file.remove(fileh5)
+    h5f <- h5file(name = fileh5, mode = "a")
+    #h5f["/data", chunksize = c(4096,1), maxdimensions=c(nrow(ldm), ncol(ldm)), compression = 6]=ldm
+    h5f["/data"]=ldm
+    h5attr(h5f, "logger")="LUL"
+    h5attr(h5f, "version")=VersionLLul
+    h5attr(h5f, "datestart")=as.character.Date(datestart)
+    h5attr(h5f, "filesrc")=basename(filecsv)
+    h5attr(h5f, "rtctick")=1
+    h5attr(h5f, "accres")=1
+    h5close(h5f)
+    rm(ldm)
+  }
+}
+
+#' A demolul2h5 function build demo lul h5 file
+#' @param fileh5 A h5 data file.
+#' @param nbrow number of row
+#' @export demolul2h5
+demolul2h5 = function(fileh5="",nbrow=10000) {
+  if (!is.character(fileh5)){
+    stop("fileh5 file path")
+  }else {
+    print(paste("out:",fileh5))
+    xseq=seq(1,nbrow)
+    ds=data.frame(xseq)
+    #tpl
+    ds[,2]=nbrow-ds[,1]
+    ds[,3]=nbrow/2
+    datestart=Sys.time()
+    #ecriture du fichier H5
+    ldm=data.matrix(ds)
+    if(file.exists(fileh5)) file.remove(fileh5)
+    h5f <- h5file(name = fileh5, mode = "a")
+    h5f["data"]=ldm
+    h5attr(h5f, "logger")="LUL"
+    h5attr(h5f, "version")=VersionLLul
+    h5attr(h5f, "datestart")=as.character.Date(datestart)
+    h5attr(h5f, "filesrc")="demolul2h5"
+    h5attr(h5f, "accres")=1
+    h5close(h5f)
+  }
+}
+
 
 #' A wacu2h5 function for concert wacu csv file to h5 file
 #' @param filecsv  A input WACU csv file.
@@ -236,7 +309,7 @@ wacu2h5 = function(filecsv="",fileh5="") {
     #h5f["/data", chunksize = c(4096,1), maxdimensions=c(nrow(ldm), ncol(ldm)), compression = 6]=ldm
     h5f["/tpl"]=ldm
     h5attr(h5f, "logger")="WACU"
-    h5attr(h5f, "version")=getversion()
+    h5attr(h5f, "version")=VersionLWacu
     h5attr(h5f, "datestart")=as.character.Date(datestart)
     h5attr(h5f, "filesrc")=basename(filecsv)
     h5attr(h5f, "rtctick")=1
@@ -268,7 +341,7 @@ wacu2hacc = function(filewacucsv= "", fileh5="", size=11274058, accfreq=25 ) {
     h5f=h5file(fileh5,"a")
     if (h5attr(h5f["/"], "logger")!="WACU") {
       stop("h5 file not WACU structure")
-    }else if (h5attr(h5f["/"], "version")!=getversion()){
+    }else if (h5attr(h5f["/"], "version")!=VersionLWacu){
       stop("WACU h5 file not good version")
     }else {
       #ok all data
@@ -313,10 +386,45 @@ demowacu2h5 = function(fileh5="",nbrow=10000) {
     h5f <- h5file(name = fileh5, mode = "a")
     h5f["data"]=ldm
     h5attr(h5f, "logger")="WACU"
-    h5attr(h5f, "version")=getversion()
+    h5attr(h5f, "version")=VersionLWacu
     h5attr(h5f, "datestart")=as.character.Date(datestart)
     h5attr(h5f, "filesrc")="demowacu2h5"
     h5attr(h5f, "accres")=1
     h5close(h5f)
   }
+}
+
+#' A demow_gui function for lunch a R-shiny application to plot datalogger view
+#' @export demo_gui
+demo_gui = function() {
+  #create default work folder
+  dir.create("~/rtoolbox/",  showWarnings = FALSE)
+  #create CATS data files
+  cdemo10k="~/rtoolbox/democats-10k.h5"
+  cdemo10kbe="~/rtoolbox/democats-10kbe.csv"
+  cdemo2600k="~/rtoolbox/democats-2600k.h5"
+  cdemo2600kbe="~/rtoolbox/democats-2600kbe.csv"
+  democats2h5(cdemo10k)
+  democats2h5(cdemo2600k,nbrow=2600000)
+  democatsmkbe(fbe = cdemo10kbe,nbrow = 10, nbseq = 20)
+  democatsmkbe(fbe = cdemo2600kbe,nbrow = 100, nbseq = 10)
+  #create AXYTREK
+  ademo="~/rtoolbox/demoaxytrek-10k.h5"
+  demoaxytrek2h5(ademo,nbrow = 15000)
+  #create WACU
+  wdemo="~/rtoolbox/demowacu-15k.h5"
+  demowacu2h5(wdemo)
+  #create LUL
+  ldemo="~/rtoolbox/demolul-5k.h5"
+  demolul2h5(ldemo,nbrow = 5000)
+  #definition des bio-loggers a afficher
+  ll=LoggerList$new()
+  ll$add(LoggerCats$new(cdemo10k,filebehavior=cdemo10kbe))
+  ll$add(LoggerCats$new(cdemo2600k, filebehavior=cdemo2600kbe, besep=",", uizoomstart=1, uizoomend=500))
+  ll$add(LoggerAxytrek$new(ademo))
+  ll$add(LoggerWacu$new(wdemo))
+  ll$add(LoggerLul$new(ldemo))
+  #affichage des informations
+  ui=LoggerUI$new(ll)
+  ui$gui()
 }
