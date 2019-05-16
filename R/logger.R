@@ -174,6 +174,8 @@ VersionLDATA="0.1.0"
 #' @field name logger display name
 #' @field fileh5 h5 data file name
 #' @field filebehavior behavior file name
+#' @field besep behavior field separator character
+#' @field besaturation the ‘saturation’ value from 0 to 1
 #' @field uizoomstart uizoomstart default value
 #' @field uizoomend uizoomend default value
 #' @import h5
@@ -200,7 +202,7 @@ Logger <- setRefClass("Logger",
                                     behaviorchoices = "list",
                                     behaviorselected = "list" ),
                       methods = list(
-                        initialize= function(fileh5 = "", filebehavior = "", besep=",", uizoomstart=0, uizoomend=0, metricshow=NULL ) {
+                        initialize= function(fileh5 = "", filebehavior = "", besep=",", besaturation=0.2, uizoomstart=0, uizoomend=0, metricshow=NULL ) {
                           if(!is.character(fileh5)){
                             stop("fileh5 file path")
                           }else if (!is.h5file(fileh5)){
@@ -225,7 +227,7 @@ Logger <- setRefClass("Logger",
                             }else {
                               uizoomend<<-nbrow
                             }
-                            behaviorinit(besep)
+                            behaviorinit(besep, besaturation)
                             initmetriclst()
                             if (is.null(metricshow)==F) {
                               metriclst$slctset(metricshow)
@@ -286,7 +288,7 @@ Logger <- setRefClass("Logger",
                           h5f["metriccol"]=colnames(lmt)
                           h5close(h5f)
                         },
-                        behaviorinit= function(besep) {
+                        behaviorinit= function(besep, besaturation) {
                           "init behavior list event"
                           lchoices=list()
                           lslct=list()
@@ -304,7 +306,7 @@ Logger <- setRefClass("Logger",
                                 lslct=c(lslct,i)
                               }
                               becolor<<-rainbow(n=i)
-                              becolorgr=rainbow(n=i,s=0.2)
+                              becolorgr=rainbow(n=i,s=besaturation)
                               #build Behavior obs list
                               for(i in 1:nrow(dso)) {
                                 row=dso[i,]
@@ -389,19 +391,19 @@ LoggerAxytrek <- setRefClass("LoggerAxytrek",
                          contains = list("Logger"),
                          fields = list(),
                          methods = list(
-                           initialize = function(fileh5 = "", filebehavior = "") {
-                             callSuper(fileh5, filebehavior)
+                           initialize = function(fileh5 = "", filebehavior = "",...) {
+                             callSuper(fileh5, filebehavior,...)
                              version<<-VersionLAxytrek
                            },
                            h5init = function() {
-                             #cat("init version cats")
+                             #cat("init version Axytrek)
                              #get info from h5 file
                              f=h5file(fileh5,"r")
                              #list.attributes(f)
                              if (h5attr(f["/"], "logger")!="AXYTREK") {
                                stop("h5 file not AXYTREK structure")
                              }else if (h5attr(f["/"], "version")!=version){
-                               stop("CATS h5 file not good version")
+                               stop("Axytrek h5 file not good version")
                              }else {
                                dt=h5attr(f["/"], "datestart")
                                datestart<<-as.POSIXct(dt, tz="GMT")
@@ -452,7 +454,7 @@ LoggerLul <- setRefClass("LoggerLul",
                               if (h5attr(f["/"], "logger")!="LUL") {
                                 stop("h5 file not Lul structure")
                               }else if (h5attr(f["/"], "version")!=version){
-                                stop("WACU h5 file not good version")
+                                stop("LUL h5 file not good version")
                               }else {
                                 dt=h5attr(f["/"], "datestart")
                                 datestart<<-as.POSIXct(dt, tz="GMT")

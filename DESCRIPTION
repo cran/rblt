@@ -1,7 +1,7 @@
 Package: rblt
 Type: Package
 Title: Bio-Logging Toolbox
-Version: 0.2.4.0
+Version: 0.2.4.1
 Authors@R: 
     person(given = "Sebastien",
            family = "Geiger",
@@ -25,7 +25,7 @@ BugReports: https://github.com/sg4r/rblt/issues
 Suggests: knitr, rmarkdown
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2019-04-09 17:36:15 UTC; seb
+Packaged: 2019-05-16 14:43:55 UTC; seb
 Author: Sebastien Geiger [aut, cre]
 Repository: CRAN
-Date/Publication: 2019-04-09 21:32:57 UTC
+Date/Publication: 2019-05-16 15:40:03 UTC

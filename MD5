@@ -1,13 +1,13 @@
-b71ae90238c11d07a21480ba9243a6f9 *DESCRIPTION
+4f9353ecf23b980870821aa4e92885f4 *DESCRIPTION
 83de6c6df2362562144b073060a107be *NAMESPACE
 07cd283f17ed1458676ebb5349813f48 *R/default.R
-cdbca895f0dca07b325e6170a001c67f *R/logger.R
+506320ca2bb9b093fe0383b72e005dd4 *R/logger.R
 f2b2435299cc06a245dffdc955c4058f *R/loggerui.R
-a3b6ede6a9fae53ccc3173fc9ac15dc4 *build/vignette.rds
+d8dd7a6c0562b4cab9e7067e757a58eb *build/vignette.rds
 bbc07ec72cddb8d28f1c2a7ab322f031 *inst/doc/rblt.R
-2f39156abbfaaca5a06a1a328a7c2039 *inst/doc/rblt.Rmd
-31a3175880980dd253d346e86c4e5c0a *inst/doc/rblt.html
-f787140733433760d48c11dc66397ff7 *man/Logger-class.Rd
+5bfe08d734425f3dbba93a4ac7baaefd *inst/doc/rblt.Rmd
+66bf39dc547eb9ffac1d0ee6cf74a3c4 *inst/doc/rblt.html
+2992ebc11a5b7d54db552ccecd531633 *man/Logger-class.Rd
 fea8aa5bacd7e00253450eb4de9e7bfd *man/LoggerAxytrek-class.Rd
 d40047d4a28a7fe1a42c7d05a013c235 *man/LoggerCats-class.Rd
 7af8596d476ea613c2bf036be5c2659e *man/LoggerData-class.Rd
@@ -31,5 +31,5 @@ fd8038b1f6524ecedb4dbce8cb4917f8 *man/getversion.Rd
 48de0011df06cb1c6b796038b41470dd *man/lul2h5.Rd
 ef438af00ef8b0dddc557fc48b40b973 *man/wacu2h5.Rd
 cc23d241003b2ae193b78abdd38d1ea0 *man/wacu2hacc.Rd
-2f39156abbfaaca5a06a1a328a7c2039 *vignettes/rblt.Rmd
+5bfe08d734425f3dbba93a4ac7baaefd *vignettes/rblt.Rmd
 50d5b23edd59ee6ae31b0424bc2c035f *vignettes/rblt.png
