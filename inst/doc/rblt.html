@@ -12,7 +12,7 @@
 
 <meta name="author" content="sebastien" />
 
-<meta name="date" content="2019-05-16" />
+<meta name="date" content="2019-06-27" />
 
 <title>Introduction to rbl</title>
 
@@ -35,7 +35,7 @@
 
 <h1 class="title toc-ignore">Introduction to rbl</h1>
 <h4 class="author">sebastien</h4>
-<h4 class="date">2019-05-16</h4>
+<h4 class="date">2019-06-27</h4>
 
 
 
@@ -62,13 +62,13 @@ devtools::install_github(&quot;sg4r/rblt&quot;)</code></pre>
 </div>
 <div id="demonstration" class="section level1">
 <h1>Démonstration</h1>
-<p>Visualisation des métrics depuis un Bio-loggers CATS, AXYTREK, LUL et WACU. Les données sont simulées pour avoir un apercus des fonctions de visualisations.</p>
+<p>Visualisation des métriques depuis un Bio-loggers CATS, AXYTREK, LUL et WACU. Les données sont simulées pour avoir un aperçus des fonctions de visualisations.</p>
 <pre><code>library(rblt)
 rblt::demo_gui()</code></pre>
 </div>
 <div id="utilisation" class="section level1">
 <h1>Utilisation</h1>
-<p>Créer un objet de la classe LoggerList qui va contenir la listes des fichiers de données a visualiser. Puis créer une vue avec l’object de la classe LoggerUI qui affichera les différentes données.</p>
+<p>Créer un objet de la classe LoggerList qui va contenir la listes des fichiers de données a visualiser. Puis créer une vue avec l’objet de la classe LoggerUI qui affichera les différentes données.</p>
 <pre><code>library(rblt)
 
 cdemo10k=&quot;~/rtoolbox/democats-10k.h5&quot;
@@ -81,9 +81,9 @@ lui$gui()</code></pre>
 <div id="utilisation-avancee" class="section level2">
 <h2>Utilisation avancée :</h2>
 <p>Différents exemples d’utilisation avancée</p>
-<div id="preinitialiser-la-zone-daffichage" class="section level3">
-<h3>Préinitialiser la zone d’affichage</h3>
-<p>Il est possible de définir la zone d’affichage en initilisant les variables ‘uizoomstart’ et ‘uizoomend’ avec les valeurs ntrick</p>
+<div id="pre-initialiser-la-zone-daffichage" class="section level3">
+<h3>Pré initialiser la zone d’affichage</h3>
+<p>Il est possible de définir la zone d’affichage en initialisant les variables ‘uizoomstart’ et ‘uizoomend’ avec les valeurs ntrick</p>
 <pre><code>ll=LoggerList$new()
 ll$add(LoggerCats$new(cdemo10k, uizoomstart=1, uizoomend=500))
 lui=LoggerUI$new(ll)
@@ -91,7 +91,7 @@ lui$gui()</code></pre>
 </div>
 <div id="changer-la-saturation-des-couleurs-des-comportements" class="section level3">
 <h3>changer la saturation des couleurs des comportements</h3>
-<p>Pour augmenter la saturation des couleurs des comportements, utiliser la variable ‘besaturation’. la valeur doit entre comprise en 0.1 et 1.0. elle est de 0.2 par defaut.</p>
+<p>Pour augmenter la saturation des couleurs des comportements, utiliser la variable ‘besaturation’. la valeur doit entre comprise en 0.1 et 1.0. elle est de 0.2 par défaut.</p>
 <pre><code>library(rblt)
 cdemo10k=&quot;~/rtoolbox/democats-10k.h5&quot;
 cdemo10kbe=&quot;~/rtoolbox/democats-10kbe.csv&quot;
@@ -100,24 +100,24 @@ ll$add(LoggerCats$new(cdemo10k,filebehavior=cdemo10kbe, besaturation=1.0, uizoom
 lui=LoggerUI$new(ll)
 lui$gui()</code></pre>
 </div>
-<div id="afficher-la-liste-des-metrics-dun-logger" class="section level3">
-<h3>Afficher la liste des metrics d’un logger</h3>
-<p>chaque type de Logger a des metrics par defaut. il est possible d’afficher la liste de metrics avec le commande metriclst draw</p>
+<div id="afficher-la-liste-des-metriques-dun-logger" class="section level3">
+<h3>Afficher la liste des métriques d’un logger</h3>
+<p>chaque type de Logger a des métriques par défaut. il est possible d’afficher la liste de métriques avec le commande metriclst draw</p>
 <pre><code>lg=LoggerCats$new(cdemo10k)
 lg$metriclst$draw()</code></pre>
 </div>
 </div>
-<div id="selection-des-metrics-a-afficher-par-defaut" class="section level2">
-<h2>Sélection des metrics à afficher par défaut</h2>
-<p>Par défaut tous les métrics du type de Bio-loggers sont affichés. Il est possible de limiter les métrics afficher en définissant le vecteur ‘metricshow’ lors de l’initialisation d’un bio-logger Utiliser T pour afficher le métric, et F pour le cacher</p>
+<div id="selection-des-metriques-a-afficher-par-defaut" class="section level2">
+<h2>Sélection des métriques à afficher par défaut</h2>
+<p>Par défaut tous les métriques du type de Bio-loggers sont affichés. Il est possible de limiter les métriques afficher en définissant le vecteur ‘metricshow’ lors de l’initialisation d’un bio-logger Utiliser T pour afficher le métrique, et F pour le cacher</p>
 <pre><code>ll=LoggerList$new()
 ll$add(LoggerCats$new(&quot;~/rtoolbox/democats2h5.h5&quot;,metricshow=c(T,F,T,F,F,F)))
 #affichage des informations
 ui=LoggerUI$new(ll)
 ui$gui()</code></pre>
-<div id="changer-la-liste-des-metrics-dun-logger" class="section level3">
-<h3>Changer la liste des metrics d’un logger</h3>
-<p>Il est possible de redéfinir l’ordre affichage des metrics, sous reserve d’avoir bien indiqué les bons parramétres. Pour cela il est nécéssaire de redéfinir la liste de metrics a afficher et leur ordre. Lorsque le boolean ‘beobs’ est définit a ‘TRUE’ les comportements sont affichés pour ce metric.</p>
+<div id="changer-la-liste-des-metriques-dun-logger" class="section level3">
+<h3>Changer la liste des métriques d’un logger</h3>
+<p>Il est possible de redéfinir l’ordre affichage des métriques, sous réserve d’avoir bien indiqué les bons paramètres. Pour cela il est nécessaire de redéfinir la liste de métriques a afficher et leur ordre. Lorsque le boolean ‘beobs’ est définit a ‘TRUE’ les comportements sont affichés pour ce métrique.</p>
 <pre><code>lg=LoggerCats$new(cdemo10k,filebehavior=cdemo10kbe)
 lg$metriclst$draw()
 
@@ -140,9 +140,9 @@ ui$gui()</code></pre>
 lm=lg$getdata()
 head(lm)</code></pre>
 </div>
-<div id="ajout-dun-metric" class="section level3">
-<h3>Ajout d’un metric</h3>
-<p>réccuperer les données, puis réaliser divers calcul sur la matrice. Il est possible de visualiser les nouveaux metrics en rajoutant les resultat via la fonction ‘Pour rajouter le résultat via ’setextmatrix’, puis en ajoutant les informations concernant les metrics via la fonction ‘metriclst$add’ Exemple pour calculer la moyenne mobile avec un LoggerCats</p>
+<div id="ajout-dun-metrique" class="section level3">
+<h3>Ajout d’un métrique</h3>
+<p>récupérer les données, puis réaliser divers calcul sur la matrice. Il est possible de visualiser les nouveaux métriques en rajoutant les résultat via la fonction ‘Pour rajouter le résultat via ’setextmatrix’, puis en ajoutant les informations concernant les métriques via la fonction ‘metriclst$add’ Exemple pour calculer la moyenne mobile avec un LoggerCats</p>
 <pre><code>library(caTools)
 
 lg=LoggerCats$new(cdemo10k)
@@ -161,9 +161,9 @@ ll$add(lg)
 ui=LoggerUI$new(ll)
 ui$gui()</code></pre>
 </div>
-<div id="enregistrement-des-metrics" class="section level3">
-<h3>Enregistrement des metrics</h3>
-<p>A partir de la version 0.4, il est possible d’enregistrer une selection des metrics dans un fichier de donné. Les métrics calculés peuvent également être inclus dans la selection.</p>
+<div id="enregistrement-des-metriques" class="section level3">
+<h3>Enregistrement des métriques</h3>
+<p>A partir de la version 0.4, il est possible d’enregistrer une sélection des métriques dans un fichier de donné. Les métriques calculés peuvent également être inclus dans la sélection.</p>
 <pre><code>#utiliser l'exemple précédant pour calculer la moyenne mobile
 metricshow=c(F,F,F,T,F,F,T)
 lg$metriclst$slctset(metricshow)
@@ -172,7 +172,7 @@ lg$saveasloggerdata(ldata)</code></pre>
 </div>
 <div id="lecture-des-metrics" class="section level3">
 <h3>Lecture des metrics</h3>
-<p>Pour relire les donner enregistrer depuis la fonction ‘saveasloggerdata’ il est nécéssaire d’utiliser le Logger type ‘LoggerData’. Le ‘LoggerData’ est une structure permettant de stocker plusieurs metrics dans un même fichier de donné.</p>
+<p>Pour relire les donner enregistrer depuis la fonction ‘saveasloggerdata’ il est nécessaire d’utiliser le Logger type ‘LoggerData’. Le ‘LoggerData’ est une structure permettant de stocker plusieurs métriques dans un même fichier de donné.</p>
 <pre><code>ll=LoggerList$new()
 ll$add(LoggerData$new(ldata))
 #affichage des informations
@@ -187,8 +187,8 @@ ui$gui()</code></pre>
 <div id="pour-les-bio-logger-cats" class="section level2">
 <h2>Pour les bio-logger CATS :</h2>
 <p>Convertissez les résultats de vos données au format csv avec la fonction rblt::cats2h5</p>
-<div id="exemple" class="section level3">
-<h3>Exemple :</h3>
+<div id="exemple-dimportation" class="section level3">
+<h3>Exemple d’importation</h3>
 <pre><code>filecatscsv=&quot;~/rtoolbox/20180216-004210-CC-07-48_15-02-2017_1.csv&quot;
 filecatsh5=&quot;~/rtoolbox/CC-07-48_15-02-2017_1.h5&quot;
 rblt::cats2h5(filecatscsv,50,filecatsh5)
@@ -202,12 +202,20 @@ rblt::cats2h5(filecatscsv,50,filecatsh5)
 [1] &quot;out: ~/rtoolbox/CC-07-48_14-02-2017_1.h5&quot;
 [1] &quot;nbrow: 5868&quot;</code></pre>
 </div>
+<div id="exemple-de-visualisation" class="section level3">
+<h3>Exemple de visualisation</h3>
+<pre><code>ll=LoggerList$new()
+ll$add(LoggerCats$new(fileacatsh5))
+#affichage des informations
+ui=LoggerUI$new(ll)
+ui$gui()</code></pre>
+</div>
 </div>
 <div id="pour-les-bio-logger-axytrek" class="section level2">
 <h2>Pour les bio-logger AXYTREK :</h2>
 <p>Convertissez les résultats de vos données du format csv avec la fonction rblt::axytrek2h5</p>
-<div id="exemple-1" class="section level3">
-<h3>Exemple:</h3>
+<div id="exemple-dimporation" class="section level3">
+<h3>Exemple d’imporation</h3>
 <pre><code>atreks1=&quot;~/rtoolbox/axytrec-s1.h5&quot;
 rblt::axytrek2h5(&quot;~/rtoolbox/AXYTREK2_S1.csv&quot;,25,atreks1)
 [1] &quot;in: ~/rtoolbox/AXYTREK2_S1.csv&quot;
@@ -219,29 +227,91 @@ rblt::axytrek2h5(&quot;~/rtoolbox/AXYTREK5_S1.csv&quot;,25,atreks2)
 [1] &quot;out: ~/rtoolbox/axytrec-s2.h5&quot;
 [1] &quot;nbrow: 2234282&quot;</code></pre>
 </div>
+<div id="exemple-de-visualisation-1" class="section level3">
+<h3>Exemple de visualisation</h3>
+<pre><code>ll=LoggerList$new()
+ll$add(LoggerAxytrek$new(fileaxyh5))
+#affichage des informations
+ui=LoggerUI$new(ll)
+ui$gui()</code></pre>
+</div>
 </div>
 <div id="pour-les-bio-logger-lul" class="section level2">
 <h2>Pour les bio-logger LUL :</h2>
-<p>Convertissez les résultats de vos données du format csv avec la fonction rblt::lul2h5</p>
-<div id="exemple-2" class="section level3">
-<h3>Exemple :</h3>
-<pre><code># a completer</code></pre>
+<p>Convertissez les résultats de vos données du format csv avec la fonction rblt::lul2h5. Attention, le formation csv change en fonction des versions. il est nécessaire de renseigner le caractère de séparation utilisé.</p>
+<div id="exemple-dimportation-1" class="section level3">
+<h3>Exemple d’importation</h3>
+<pre><code>filelulcsv=&quot;~/rtoolbox/lul34.txt&quot;
+filelulh5=&quot;~/rtoolbox/lul34.h5&quot;
+rblt::lul2h5(filelulcsv,filelulh5,sep=&quot;;&quot;)</code></pre>
+</div>
+<div id="exemple-de-visualisation-2" class="section level3">
+<h3>Exemple de visualisation</h3>
+<pre><code>ll=LoggerList$new()
+ll$add(LoggerLul$new(filelulh5))
+#affichage des informations
+ui=LoggerUI$new(ll)
+ui$gui()</code></pre>
 </div>
 </div>
 <div id="pour-les-bio-logger-wacu" class="section level2">
 <h2>Pour les bio-logger WACU :</h2>
-<p>Convertissez les résultats de vos données au format csv avec la fonction rblt::wacu2h5dt Pour ajouter les informations accelero, il est nécéssaire d’utiliser l’utilitaire en C++ wacu2csv</p>
-<div id="exemple-3" class="section level3">
-<h3>Exemple :</h3>
-<pre><code>w134=&quot;~/rtoolbox/wacu134.h5&quot;
-wacu2h5(&quot;~/rtoolbox/wacu134_TRDDU_cc.txt&quot;,w134)
-# voir wacu2csv pour la concersion des données accéléros en csv, puis
-wacu2hacc(&quot;~/rtoolbox/wacu134_TRDDU_cc_ACC.csv&quot;,w134)</code></pre>
+<p>Ces bio-loggers fournissent leurs données dans 2 fichiers TXT séparés. Les données TPL et les données ACC. Pour une visualisation détaillé des données accélérométriques, il est nécessaire d’utiliser l’utilitaire wacu2csv pour combiner les fichiers TPL et ACC dans un fichier temporaire, a partir duquel il serra possible d’importer les données combinées. Pour les fichiers de données de plusieurs mois, il est possible de faire une prévisualisation des données avec une résolution maximale d’une seconde. Cela permet d’avoir rapidement une vue d’ensemble des données, ainsi que de localiser les zones d’activités. Pour cela utiliser l’option “-p” de l’utilitaire wacu2csv pour combiner les fichiers TPL et ACC avec une résolution d’un seconde. Il peut être envisagé de rajouter une option pour exporter ces zones d’activités.</p>
+<div id="exemple-dimportation-2" class="section level3">
+<h3>Exemple d’importation</h3>
+<pre><code># combiner les données TPL et ACC
+wacu2csv -d ~/rtoolbox/wacu161.txt -a ~/rtoolbox/wacu161_ACC.txt  -o /rtoolbox/w161.csv
+#lors du traitement des données, l'utilitaire affichera les informations rtc_period,rtc_ticks et start_at qu'il faudra reporter dans le fonction wacu2h5 sous R
+rtc_period:1
+rtc_ticks:50
+start_at:29/03/2016 00:00:01
+
+# import des données depuis R
+filewacucsv=&quot;~/rtoolbox/w161.csv&quot;
+filewacuh5=&quot;~/rtoolbox/wacu161.h5&quot;
+datestartstring=&quot;29/03/2016 00:00:01&quot;
+rblt::wacu2h5(filewacucsv,filewacuh5,rtctick=1, accres=50, datestartstring)
+[1] &quot;in: ~/rtoolbox/w161.csv&quot;
+[1] &quot;out: ~/rtoolbox/wacu161.h5&quot;
+|--------------------------------------------------|
+|==================================================|
+[1] &quot;29/03/2016 00:00:01&quot;
+[1] &quot;nbrow: 64802850&quot;</code></pre>
 </div>
-<div id="conversion-des-donnees-1" class="section level3">
-<h3>Conversion des données</h3>
+<div id="exemple-de-visualisation-3" class="section level3">
+<h3>Exemple de visualisation</h3>
+<pre><code>ll=LoggerList$new()
+ll$add(LoggerWacu$new(filewacuh5))
+#affichage des informations
+ui=LoggerUI$new(ll)
+ui$gui()</code></pre>
+</div>
+<div id="exemple-de-previsualisation" class="section level3">
+<h3>Exemple de prévisualisation</h3>
+<pre><code># combiner les données TPL et ACC
+wacu2csv -p -d ~/rtoolbox/wacu161.txt -a ~/rtoolbox/wacu161_ACC.txt  -o /rtoolbox/w161.csv
+rtc_period:1
+rtc_ticks:1
+start_at:29/03/2016 00:00:01
+
+#import des données depuis R
+filewacucsv=&quot;~/rtoolbox/w161.csv&quot;
+filewacuh5=&quot;~/rtoolbox/wacu161.h5&quot;
+datestartstring=&quot;29/03/2016 00:00:01&quot;
+rblt::wacu2h5(filewacucsv,filewacuh5,rtctick=1, accres=1, datestartstring)
+[1] &quot;in: ~/rtoolbox/w161.csv&quot;
+[1] &quot;out: ~/rtoolbox/wacu161.h5&quot;
+|--------------------------------------------------|
+|==================================================|
+[1] &quot;29/03/2016 00:00:01&quot;
+[1] &quot;nbrow: 1296057&quot;
+
+#visualisation: utiliser la même méthode que précédemment.</code></pre>
+</div>
+</div>
+<div id="conversion-des-donnees-1" class="section level2">
+<h2>Conversion des données</h2>
 <p>Lors de la conversion des données des fichiers CATS ou AXYTREK il est nécessaire d’indiquer pour le moment dans la variable ‘accres’ la fréquence d’échantillonnage utilisée lors de l’acquisition. voir les fonction rblt::axytrek2h5 ou rblt::cats2h5</p>
-</div>
 </div>
 </div>
 

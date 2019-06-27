@@ -194,6 +194,7 @@ Logger <- setRefClass("Logger",
                                     nbrow = "numeric",
                                     nbcol = "numeric",
                                     accres = "numeric",
+                                    rtctick = "numeric",
                                     version = "character",
                                     uizoomstart = "numeric",
                                     uizoomend = "numeric",
@@ -215,6 +216,7 @@ Logger <- setRefClass("Logger",
                             nbrow<<-0
                             nbcol<<-Inf
                             accres<<-1
+                            rtctick<<-1
                             version<<-"0.2.3"
                             h5init()
                             if (uizoomstart>0) {
@@ -281,6 +283,7 @@ Logger <- setRefClass("Logger",
                           h5attr(h5f, "version")=VersionLDATA
                           h5attr(h5f, "datestart")=as.character.Date(datestart)
                           h5attr(h5f, "accres")=accres
+                          h5attr(h5f, "rtctick")=rtctick
                           h5attr(h5f, "filesrc")=fileh5
                           #metrics
                           lmt=metriclst$getmatrix()
@@ -358,6 +361,7 @@ LoggerCats <- setRefClass("LoggerCats",
                                nbrow<<-size[1]
                                nbcol<<-size[2]
                                accres<<-h5attr(f["/"], "accres")
+                               rtctick<<-1
                              }
                              h5close(f)
                            },
@@ -412,6 +416,7 @@ LoggerAxytrek <- setRefClass("LoggerAxytrek",
                                nbrow<<-size[1]
                                nbcol<<-size[2]
                                accres<<-h5attr(f["/"], "accres")
+                               rtctick<<-1
                              }
                              h5close(f)
                            },
@@ -463,6 +468,7 @@ LoggerLul <- setRefClass("LoggerLul",
                                 nbrow<<-size[1]
                                 nbcol<<-size[2]
                                 accres<<-h5attr(f["/"], "accres")
+                                rtctick<<-h5attr(f["/"], "rtctick")
                               }
                               h5close(f)
                             },
@@ -514,15 +520,16 @@ LoggerWacu <- setRefClass("LoggerWacu",
                                nbrow<<-size[1]
                                nbcol<<-size[2]
                                accres<<-h5attr(f["/"], "accres")
+                               rtctick<<-h5attr(f["/"], "rtctick")
                              }
                              h5close(f)
                            },
                            initmetriclst = function() {
                              lm=MetricList$new()
-                             lm$add(Metric("wTemperature","t",1,1))
-                             lm$add(Metric("wPression","p",2,1))
-                             lm$add(Metric("wLight intensity","l",3,1))
-                             lm$add(Metric("wAccelerometer","a",3,3,beobs=TRUE))
+                             lm$add(Metric("Temperature","t",1,1))
+                             lm$add(Metric("Pression","p",2,1))
+                             lm$add(Metric("Light intensity","l",3,1))
+                             lm$add(Metric("Accelerometer","a",4,3,beobs=TRUE))
                              metriclst<<-lm
                            },
                            getdata= function() {
@@ -567,6 +574,7 @@ LoggerData <- setRefClass("LoggerData",
                                 nbrow<<-size[1]
                                 nbcol<<-size[2]
                                 accres<<-h5attr(f["/"], "accres")
+                                rtctick<<-h5attr(f["/"], "rtctick")
                                 #metriclst
                                 lm=MetricList$new()
                                 lmt=f["/metriclst"][,]

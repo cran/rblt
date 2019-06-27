@@ -31,6 +31,7 @@ getversion = function() {
 
 #' A cats2h5 function for convert csv file to h5 file
 #' @import utils
+#' @importFrom data.table fread
 #' @param filecsv  A input cats csv file.
 #' @param accres input resolution
 #' @param fileh5 A output h5 data file.
@@ -43,7 +44,7 @@ cats2h5 = function(filecsv="",accres=50, fileh5="" ) {
   }else {
     print(paste("in:",filecsv))
     print(paste("out:",fileh5))
-    ldsr=data.table::fread(file = filecsv, dec = ",", select=c(1:2,5:14,20,22), colClasses=list(character=1:2,numeric=5:14,20,22) )
+    ldsr=fread(file = filecsv, dec = ",", select=c(1:2,5:14,20,22), colClasses=list(character=1:2,numeric=5:14,20,22) )
     strdatestart=paste(ldsr[1,1],ldsr[1,2])
     datestart=as.POSIXct(strdatestart,format="%d.%m.%Y %H:%M:%OS",tz="GMT")
     nbrow=nrow(ldsr)
@@ -60,6 +61,7 @@ cats2h5 = function(filecsv="",accres=50, fileh5="" ) {
     h5attr(h5f, "version")=VersionLCATS
     h5attr(h5f, "datestart")=as.character.Date(datestart)
     h5attr(h5f, "accres")=accres
+    h5attr(h5f, "rtctick")=1
     h5attr(h5f, "filesrc")=basename(filecsv)
     h5close(h5f)
   }
@@ -102,6 +104,7 @@ democats2h5 = function(fileh5="",nbrow=10000) {
     h5attr(h5f, "datestart")=as.character.Date(datestart)
     h5attr(h5f, "filesrc")="democats2h5"
     h5attr(h5f, "accres")=1
+    h5attr(h5f, "rtctick")=1
     h5close(h5f)
   }
 }
@@ -111,8 +114,6 @@ democats2h5 = function(fileh5="",nbrow=10000) {
 #' @param nbrow input number of data rate in 1 seconde
 #' @param nbseq input sequence lenght
 #' @export democatsmkbe
-#' @examples
-#' democatsmkbe("democatsmkbe",nbrow=10,nbseq=2)
 democatsmkbe = function(fbe="",nbrow=10,nbseq=2) {
   if (!is.character(fbe)){
     stop("fbe must file path")
@@ -134,6 +135,7 @@ democatsmkbe = function(fbe="",nbrow=10,nbseq=2) {
 }
 
 #' A axytrek2h5 function for convert csv file to h5 file
+#' @importFrom data.table fread
 #' @param filecsv  A input axytrek csv file.
 #' @param accres input number of data rate in 1 seconde
 #' @param fileh5 A output h5 data file.
@@ -146,8 +148,8 @@ axytrek2h5 = function(filecsv="", accres=25, fileh5="") {
   }else {
     print(paste("in:",filecsv))
     print(paste("out:",fileh5))
-    ldsr1=data.table::fread(file = filecsv,fill = TRUE, dec = ",", select=c(2:6), colClasses=list(character=2:3,numeric=4:6))
-    ldsr2=data.table::fread(file = filecsv,fill = TRUE, dec = ".", select=c(8:9), colClasses=list(numeric=8:9))
+    ldsr1=fread(file = filecsv,fill = TRUE, dec = ",", select=c(2:6), colClasses=list(character=2:3,numeric=4:6))
+    ldsr2=fread(file = filecsv,fill = TRUE, dec = ".", select=c(8:9), colClasses=list(numeric=8:9))
     lds=cbind(ldsr1,ldsr2)
     rm(ldsr1,ldsr2)
     names(lds)=c("date","time","x","y","z","p","t")
@@ -166,6 +168,7 @@ axytrek2h5 = function(filecsv="", accres=25, fileh5="") {
     h5attr(h5f, "datestart")=as.character.Date(datestart)
     h5attr(h5f, "filesrc")=basename(filecsv)
     h5attr(h5f, "accres")=accres
+    h5attr(h5f, "rtctick")=1
     h5close(h5f)
   }
 }
@@ -174,8 +177,6 @@ axytrek2h5 = function(filecsv="", accres=25, fileh5="") {
 #' @param fileh5 input data H5 file
 #' @param nbrow number of row
 #' @export demoaxytrek2h5
-#' @examples
-#' demoaxytrek2h5("demoaxy.h5",nbrow=100)
 demoaxytrek2h5 = function(fileh5="",nbrow=10000) {
   if (!is.character(fileh5)){
     stop("fileh5 file path")
@@ -200,16 +201,17 @@ demoaxytrek2h5 = function(fileh5="",nbrow=10000) {
     h5attr(h5f, "datestart")=as.character.Date(datestart)
     h5attr(h5f, "filesrc")="demoaxytrek2h5"
     h5attr(h5f, "accres")=1
+    h5attr(h5f, "rtctick")=1
     h5close(h5f)
   }
 }
 
 #' A lul2h5 function for concert lul csv file to h5 file
 #' @param filecsv  A input LUL csv file.
-#' @param accres input number of data rate in 1 seconde
 #' @param fileh5 A output h5 data file.
+#' @param sep input the field separator character.
 #' @export lul2h5
-lul2h5 = function(filecsv="", accres=25, fileh5="") {
+lul2h5 = function(filecsv="", fileh5="", sep="\t") {
   if(!is.character(filecsv)){
     stop("filecsv file path")
   }else if (!is.character(fileh5)){
@@ -217,7 +219,24 @@ lul2h5 = function(filecsv="", accres=25, fileh5="") {
   }else {
     print(paste("in:",filecsv))
     print(paste("out:",fileh5))
-    lds=data.table::fread(file=filecsv,skip = 27,header = F, sep="\t")
+    lulhead=readLines(filecsv, n=1)
+    lulheadnbline=regmatches(lulhead,gregexpr("[0-9]+",text = lulhead))
+    if (length(lulheadnbline[[1]])<1) {
+      stop("ERROR read lul head file")
+    }
+    headskip=as.numeric(lulheadnbline[[1]][1])
+    lulhead=readLines(filecsv, n=headskip)
+    lulhead=iconv(lulhead, "latin1", "ASCII", "")
+    rtctick=0
+    for(i in lulhead) {
+      if(substr(i,1,29)=="$    RTC tick period (in s): ") {
+        rtctick=as.numeric(substr(i,30,35))
+        }
+    }
+    if (rtctick==0) {
+      stop("ERROR Lul head rtctick not found")
+    }
+    lds=fread(file=filecsv,skip = headskip,header = F, sep=sep,select=c(1,2,3,4,5))
     names(lds)=c("date","time","t","p","l")
     strdatestart=paste(lds[1,"date"],lds[1,"time"])
     print(strdatestart)
@@ -240,7 +259,7 @@ lul2h5 = function(filecsv="", accres=25, fileh5="") {
     h5attr(h5f, "version")=VersionLLul
     h5attr(h5f, "datestart")=as.character.Date(datestart)
     h5attr(h5f, "filesrc")=basename(filecsv)
-    h5attr(h5f, "rtctick")=1
+    h5attr(h5f, "rtctick")=rtctick
     h5attr(h5f, "accres")=1
     h5close(h5f)
     rm(ldm)
@@ -272,16 +291,20 @@ demolul2h5 = function(fileh5="",nbrow=10000) {
     h5attr(h5f, "datestart")=as.character.Date(datestart)
     h5attr(h5f, "filesrc")="demolul2h5"
     h5attr(h5f, "accres")=1
+    h5attr(h5f, "rtctick")=1
     h5close(h5f)
   }
 }
 
-
 #' A wacu2h5 function for concert wacu csv file to h5 file
+#' @importFrom data.table fread :=
 #' @param filecsv  A input WACU csv file.
 #' @param fileh5 A output h5 data file.
+#' @param rtctick tpl frequence
+#' @param accres  acc frequence
+#' @param datestartstring A Date string in GMT
 #' @export wacu2h5
-wacu2h5 = function(filecsv="",fileh5="") {
+wacu2h5 = function(filecsv="",fileh5="",rtctick=1,accres=50,datestartstring="") {
   if(!is.character(filecsv)){
     stop("filecsv file path")
   }else if (!is.character(fileh5)){
@@ -289,72 +312,43 @@ wacu2h5 = function(filecsv="",fileh5="") {
   }else {
     print(paste("in:",filecsv))
     print(paste("out:",fileh5))
-    lds=data.table::fread(file=filecsv,skip = 24,header = F, sep="\t")
-    names(lds)=c("date","time","t","p","l","v1")
-    strdatestart=paste(lds[1,"date"],lds[1,"time"])
-    print(strdatestart)
-    datestart=as.POSIXct(strdatestart,format="%d/%m/%Y %H:%M:%OS",tz="GMT")
+    lds=fread(file=filecsv)
+    names(lds)=c("t","p","l","x","y","z")
+    print(datestartstring)
+    datestart=as.POSIXct(datestartstring,format="%d/%m/%Y %H:%M:%OS",tz="GMT")
     nbrow=nrow(lds)
     print(paste("nbrow:",nbrow))
     #change default value
-    ldm=lds[,"t"]/10
-    lds[,"t"]=ldm
-    ldm=lds[,"p"]*(-1)
-    lds[,"p"]=ldm
+    lds[,c("t"):=list(t/10)]
+    lds[,c("p"):=list(p*(-1))]
     #ecriture du fichier H5
-    ldm=data.matrix(lds[,c("t","p","l")])
-    rm(lds)
+    h5buf=1000000
+    h5dd=1
+    h5df=h5buf
     if(file.exists(fileh5)) file.remove(fileh5)
-    h5f <- h5file(name = fileh5, mode = "a")
-    #h5f["/data", chunksize = c(4096,1), maxdimensions=c(nrow(ldm), ncol(ldm)), compression = 6]=ldm
-    h5f["/tpl"]=ldm
+    h5f <- h5file(fileh5, mode = "w")
+    createDataSet(h5f,datasetname = "/data", type = "double", dimensions = c(nbrow,6), chunksize = c(h5buf,1) )
+    while (h5df<nbrow) {
+      cat(".")
+      ldm=as.matrix(lds[h5dd:h5df,])
+      h5f["/data"][h5dd:h5df,]=ldm
+      h5dd=h5df
+      h5df=h5dd+h5buf
+    }
+    h5df=nbrow
+    ldm=as.matrix(lds[h5dd:h5df,])
+    h5f["/data"][h5dd:h5df,]=ldm
     h5attr(h5f, "logger")="WACU"
     h5attr(h5f, "version")=VersionLWacu
     h5attr(h5f, "datestart")=as.character.Date(datestart)
     h5attr(h5f, "filesrc")=basename(filecsv)
-    h5attr(h5f, "rtctick")=1
-    h5attr(h5f, "accres")=1
+    h5attr(h5f, "rtctick")=rtctick
+    h5attr(h5f, "accres")=accres
+    h5flush(h5f)
     h5close(h5f)
-    rm(ldm)
+    rm(lds)
   }
 }
-
-#' A wacu2hacc function for insert wacu acc csv file to h5 file
-#' @param filewacucsv  A input WACU csv file.
-#' @param fileh5 A output h5 data file.
-#' @param size the default data size
-#' @param accfreq the default acc frequence
-#' @export wacu2hacc
-wacu2hacc = function(filewacucsv= "", fileh5="", size=11274058, accfreq=25 ) {
-  # version rapide qui ne lit que les informations a la seconde
-  # pour préparer la ui et la démo
-  # evolution de la version 2, mais en utilisant wacu2csv en C++ pour reformater les data au format CSV
-  if(!is.character(filewacucsv)){
-    stop("filewacucsv file path")
-  }else if (!is.character(fileh5)){
-    stop("fileh5 file path")
-  }else {
-    print(paste("in:",filewacucsv))
-    print(paste("out:",fileh5))
-    #read wacu acc data
-    macc=data.table::fread(file=filewacucsv,header = F, select=c(5,6,7))
-    h5f=h5file(fileh5,"a")
-    if (h5attr(h5f["/"], "logger")!="WACU") {
-      stop("h5 file not WACU structure")
-    }else if (h5attr(h5f["/"], "version")!=VersionLWacu){
-      stop("WACU h5 file not good version")
-    }else {
-      #ok all data
-      mtpl=h5f["/tpl"][,1:3]
-      m=cbind(mtpl,macc)
-      m=as.matrix(m)
-      #write new value in "/data
-      h5f["/data"]=m
-      h5close(h5f)
-    }#end else if
-  }
-}
-
 
 #' A demowacu2h5 function build demo cats h5 file
 #' @param fileh5 A h5 data file.
@@ -390,6 +384,7 @@ demowacu2h5 = function(fileh5="",nbrow=10000) {
     h5attr(h5f, "datestart")=as.character.Date(datestart)
     h5attr(h5f, "filesrc")="demowacu2h5"
     h5attr(h5f, "accres")=1
+    h5attr(h5f, "rtctick")=1
     h5close(h5f)
   }
 }
