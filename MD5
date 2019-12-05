@@ -1,12 +1,12 @@
-ab532cdc6095e21d2dba1d76a06a2d46 *DESCRIPTION
-5724d6b01316806903f475789cc35a33 *NAMESPACE
+3d9bb7c262fbd8526170a3fa97e41e12 *DESCRIPTION
+7ca87741303cb765a3ade3d95386fbd6 *NAMESPACE
 ef1354cc03d84c6ca64d48a9523e9dcb *R/default.R
-6d20fe65a382a69cf4325574a3b55cfe *R/logger.R
+28e3888052b18d72787ecc07a85ef4e9 *R/logger.R
 0fa3e473b209846381ca35f3e4d01aa4 *R/loggerui.R
 70762b7b47e214e0220a34381e8b1a67 *build/vignette.rds
 bbc07ec72cddb8d28f1c2a7ab322f031 *inst/doc/rblt.R
 52ea675430c8758841efc1d3e04ea9af *inst/doc/rblt.Rmd
-3d0d91e5d50f5f5e080f79166d1c2b37 *inst/doc/rblt.html
+0114e88471cd63ae4dcd3b3b0a542262 *inst/doc/rblt.html
 2992ebc11a5b7d54db552ccecd531633 *man/Logger-class.Rd
 fea8aa5bacd7e00253450eb4de9e7bfd *man/LoggerAxytrek-class.Rd
 d40047d4a28a7fe1a42c7d05a013c235 *man/LoggerCats-class.Rd

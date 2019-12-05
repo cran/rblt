@@ -1,7 +1,7 @@
 Package: rblt
 Type: Package
 Title: Bio-Logging Toolbox
-Version: 0.2.4.4
+Version: 0.2.4.5
 Authors@R: 
     person(given = "Sebastien",
            family = "Geiger",
@@ -18,7 +18,7 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1
 SystemRequirements: libhdf5 (>= 1.8.12)
-Depends: R (>= 3.2), h5 (>= 0.9), data.table, xts, dygraphs, shiny,
+Depends: R (>= 3.2), hdf5r (>= 1.0), data.table, xts, dygraphs, shiny,
         methods
 Imports: tools
 URL: https://github.com/sg4r/rblt
@@ -26,7 +26,7 @@ BugReports: https://github.com/sg4r/rblt/issues
 Suggests: knitr, rmarkdown
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2019-10-15 13:29:44 UTC; seb
+Packaged: 2019-12-03 20:40:49 UTC; seb
 Author: Sebastien Geiger [aut, cre]
 Repository: CRAN
-Date/Publication: 2019-10-15 14:30:02 UTC
+Date/Publication: 2019-12-05 11:50:02 UTC
